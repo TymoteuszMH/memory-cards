@@ -1,12 +1,15 @@
 import { ReactElement } from 'react'
 import './App.scss'
-import { Game } from './components/Game'
+import { Menu } from './components/Menu'
+import { History } from './components/History'
 
 const App = (): ReactElement => {
   return (
     <>
-    <div className='container'><Game/></div>
-      
+      <div className='container'>
+        <Menu/>
+        <History/>
+      </div>
     </>
   )
 }
