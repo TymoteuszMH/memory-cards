@@ -4,8 +4,8 @@ import { useHistoryStore } from "../stores/history-store";
 export const History = (): ReactElement =>{
     const historyStore = useHistoryStore();
     return (<>
-        <span id="history" className={`${historyStore.historyClass}`} onClick={()=>{historyStore.toggleClass()}}>
-            <div className='card' onClick={(event)=>event?.stopPropagation()}>
+        <span id="history" className={`${historyStore.historyClass == 'show' ? 'fadeIn' : 'fadeOut'}`} onClick={()=>{historyStore.toggleClass()}}>
+            <div className={`card ${historyStore.historyClass}`}  onClick={(event)=>event?.stopPropagation()}>
                 <button onClick={()=>{historyStore.toggleClass()}}>x</button>
 
                 <table>

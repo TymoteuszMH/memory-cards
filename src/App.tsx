@@ -2,16 +2,30 @@ import { ReactElement } from 'react'
 import './App.scss'
 import { Menu } from './components/Menu'
 import { History } from './components/History'
+import { useGameStore } from './stores/game-store'
+import { Game } from './components/Game'
 
 const App = (): ReactElement => {
-  return (
-    <>
-      <div className='container'>
-        <Menu/>
-        <History/>
-      </div>
-    </>
-  )
+  const gameStore = useGameStore();
+
+  if(gameStore.started){
+    return (
+      <>
+          <div className='container'>
+            <Game/>
+          </div>
+      </>
+    );
+  }else{
+    return (
+      <>
+        <div className='container'>
+          <Menu/>
+          <History/>
+        </div>
+      </>
+    )
+  }
 }
 
 export default App
