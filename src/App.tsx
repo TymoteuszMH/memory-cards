@@ -11,9 +11,7 @@ const App = (): ReactElement => {
   if(gameStore.started){
     return (
       <>
-          <div className='container'>
-            <Game/>
-          </div>
+        <Game/>
       </>
     );
   }else{

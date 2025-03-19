@@ -121,10 +121,17 @@ table{
     }
 }
 
+.stats{
+position: sticky;
+    background-color: black;
+    width: 100%;
+    height: 10%;
+    z-index: 1;
+}
+
 .board{
     width: 100%;
-    height: 100%;
-    padding: 2vw 0;
+    height: 90%;
     gap: 10px;
     display: inline-flex;
     flex-wrap: wrap;
@@ -132,26 +139,16 @@ table{
     justify-content: center;
 }
 
-@media screen and (max-width: 525px) {
-    .game-card{
-        flex-basis: 20%;
-    }   
-}
-
-@media screen and (max-width: 245px) {
-    .game-card{
-        flex-basis: 40%;
-    }   
-}
-
 .game-card{
-    min-width: 10%;
-    max-width: 50%;
-    min-height: 10%;
-    max-height: 30%;
-    aspect-ratio: 1/1.8;
-    border-radius: 10px;
-    border: solid black;
+    aspect-ratio: 1/1.4;
+    border-radius: 5px;
+    overflow: hidden;
+    flex-basis: 10%;
+    
+    img{
+        height: 100%;
+        width: 100%;
+    }
 }
 
 .hidden{
@@ -173,6 +170,26 @@ table{
 
 .fadeOut{
     animation: fadeOut .5s forwards;
+}
+
+.rotateIn{
+    animation: rotateIn .5s forwards;
+}
+
+.rotateOut{
+    animation: rotateOut .5s forwards;
+}
+
+@media screen and (max-width: 625px) {
+    .game-card{
+        flex-basis: 20% !important;
+    }   
+}
+
+@media screen and (max-width: 245px) {
+    .game-card{
+        flex-basis: 40% !important;
+    }   
 }
 
 @keyframes transformIn {
@@ -209,3 +226,20 @@ table{
         display: none;
     }
 }
+
+@keyframes rotateIn {
+    from{
+        transform: rotateY(90deg);
+    }to{
+        transform: 0;
+    }
+}
+
+@keyframes rotateOut {
+    from{
+        transform: 0;
+    }to{
+        transform: rotateY(90deg);
+    }
+}
+

@@ -9,8 +9,6 @@ type Store = {
     toggleClass: ()=>void
 }
 
-
-
 export const useHistoryStore = create<Store>((set, get)=>({
     historyClass: 'hidden',
     gamesHistory: [],
