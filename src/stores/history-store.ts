@@ -1,7 +1,18 @@
 import { create } from "zustand/react"
 import { Game } from "./game-store"
 
-type Store = {
+
+/**
+ * Store type
+ * @param {string} hisotryClass - state of history card visibility
+ * @param {Game[]} gamesHistory - whole history
+ * @param {boolean} gameSaved - state of game saving
+ * @param {()=>void} newGame - handler for starting new game
+ * @param {(game: Game)=>void} saveGame - saving game to localstorage
+ *      @param {Game} game - game to be saved
+ * @param {()=>void} toggleClass - handler to change state of history card visibility
+ */
+type HistoryStoreParam = {
     historyClass: string,
     gamesHistory: Game[],
     gameSaved: boolean,
@@ -10,7 +21,11 @@ type Store = {
     toggleClass: ()=>void
 }
 
-export const useHistoryStore = create<Store>((set, get)=>({
+/**
+ * History store, used for saving and showing local games
+ * @see HistoryStoreParam above
+ */
+export const useHistoryStore = create<HistoryStoreParam>((set, get)=>({
     historyClass: 'hidden',
     gamesHistory: JSON.parse(localStorage.getItem('gameList') || "[]"),
     gameSaved: false,

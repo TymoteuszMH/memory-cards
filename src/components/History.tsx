@@ -2,9 +2,21 @@ import { ReactElement } from "react"
 import { useHistoryStore } from "../stores/history-store";
 import { Time } from "./Time";
 
+/** 
+ * History of games
+ * @returns game hostory table
+ */
 export const History = (): ReactElement =>{
+    /** 
+     * @var {HistoryStoreParam} historyStore - history store
+     */
     const historyStore = useHistoryStore();
 
+    /** 
+     * @function toDate - changing secounds to date
+     * @param {number} secounds
+     * @returns {string} - date
+     */
     const toDate = (secounds: number) =>{
         return Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(secounds);
     }

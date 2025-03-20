@@ -9,6 +9,7 @@ $btn_prim_hov: rgb(0, 37, 158);
 
 :root{
     color: $color_prim;
+    overflow-x: hidden;
 }
 
 html, body, #root {
@@ -85,7 +86,11 @@ table{
         text-align: center;
         border-bottom: $color_prim solid;
         th{
+            font-size: inherit;
             width: 25%;
+        }
+        td{
+            font-size: inherit;
         }
     }
 }
@@ -146,6 +151,7 @@ table{
     }
     h1{
         width: 50%;
+        margin-top: 0;
         align-content: center;
         text-align: center;
     }
@@ -225,12 +231,27 @@ table{
 }
 
 @media screen and (max-width: 625px) {
+    *{
+        font-size: small;
+    }
     .game-card{
         flex-basis: 20% !important;
         max-height: calc(70vh/4) !important;
         height: 100%;
         width: 100%;
     }   
+
+    .stats{
+        overflow: hidden;
+
+        h1{
+            width: 30%;
+        }
+        button{
+            font-size: .7rem;
+            width: 100%;
+        }
+    }
 }
 
 @media screen and (max-width: 300px) {
@@ -251,19 +272,14 @@ table{
 
     }
 
+    th, tr{
+        font-size: .7rem;
+    }
+
     .game-card{
         max-height: calc(70vh/8) !important;
         flex-basis: 40% !important;
     }   
-    .stats{
-        h1{
-            width: 30%;
-        }
-        button{
-            width: 100%;
-            height: 30%;
-        }
-    }
 }
 
 @keyframes transformIn {
