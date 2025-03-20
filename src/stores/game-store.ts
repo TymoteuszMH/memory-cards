@@ -8,34 +8,43 @@ export type ICard = {
 }
 
 export type Game = {
-    started: boolean,
-    ended: boolean,
-    cards: ICard[],
     attempts: number,
     gameDuration: number,
     date: number, 
+}
+
+interface GameStoreProps extends Game{
+    started: boolean,
+    ended: boolean,
+    cards: ICard[],
     startGame: () => void,
     endGame: () => void,
     addAttempt: () => void,
     addTime: () => void,
     setCard: (id: number) => void,
+    getGame: () => Game
 }
 
 const matchCards = (cards: ICard[], id: number) =>{
-    if(!cards[id].paired)
-        cards[id].showed = !cards[id].showed
+    if(cards[id].paired)
+        return {cards: cards, attempt: false}
+        
+    cards[id].showed = !cards[id].showed
 
     let attempt = false;
     let match = cards.filter((card)=>card.showed && !card.paired)
 
-    cards.forEach((card)=>{
-        if(match.length > 1 && match.includes(card)){
-            attempt = true;
-            card.showed = card.paired = match[0].name == match[1].name
-        }
-    })
+    if(match.length > 1){
+        attempt = true;
 
-    return {cards: cards, attempt: attempt}
+        cards.forEach((card)=>{
+            if(match.includes(card))
+                card.paired = card.showed = match[0].name == match[1].name
+        })
+    }
+
+
+    return  {cards: cards, attempt: attempt}
 }
 
 const getRandomInt = (max:number) => {
@@ -46,14 +55,14 @@ const randomCards = () =>{
     let cards: ICard[] = []
     let names: string[] = ['a', 'a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'f', 'f', 'g', 'g', 'h', 'h'];
 
-    for(let i=15; i>=0; i--){
-        cards.push({id: i, name: names.splice(getRandomInt(i), 1)[0], showed: false, paired: false});
+    for(let i=0; i<=15; i++){
+        cards.push({id: i, name: names.splice(getRandomInt(15-i), 1)[0], showed: false, paired: false});
     }
 
     return cards;
 }
 
-export const useGameStore = create<Game>((set, get)=>({
+export const useGameStore = create<GameStoreProps>((set, get)=>({
     started: false,
     ended: false, 
     attempts: 0, 
@@ -75,12 +84,15 @@ export const useGameStore = create<Game>((set, get)=>({
             ...state,
             ended: true
         }))
+        console.log(get().ended)
     },
 
-    addAttempt: ()=>{set((state)=>({
-        ...state,
-        attempts: state.attempts + 1
-    }))},
+    addAttempt: ()=>{
+        set((state)=>({
+            ...state,
+            attempts: state.attempts + 1
+        }))
+    },
 
     addTime: ()=>{set((state)=>({
         ...state,
@@ -88,19 +100,26 @@ export const useGameStore = create<Game>((set, get)=>({
     }))},
 
     setCard: (id: number)=>{
-        let state = get();
-        let match = matchCards(state.cards, id)
+        let match = matchCards(get().cards, id)
 
-        if(match.attempt){
-            state.addAttempt()
-            let isEnded = match.cards.filter((card)=>!card.paired)
-            if(isEnded.length == 0)
-                state.endGame()
-        }
-
-        set(()=>({
+        set((state)=>({
             ...state,
-            cards: match.cards
+            cards: match.cards,
+            attempts: match.attempt ? state.attempts + 1 : state.attempts
         }))
+
+        let isEnded = match.cards.filter((card)=>!card.paired)
+        console.log(isEnded)
+        if(!isEnded)
+            get().endGame()
+    },
+
+    getGame: ()=>{
+        const game = get()
+        return {
+            attempts: game.attempts,
+            gameDuration: game.gameDuration,
+            date: game.date, 
+        }
     }
 }))

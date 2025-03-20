@@ -13,6 +13,7 @@ export const useHistoryStore = create<Store>((set, get)=>({
     historyClass: 'hidden',
     gamesHistory: [],
     saveGame: (game: Game)=>{
+        console.log(game)
         set((state)=>({
             ...state, 
             gamesHistory: [...state.gamesHistory, game]
