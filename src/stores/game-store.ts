@@ -74,7 +74,12 @@ export const useGameStore = create<GameStoreProps>((set, get)=>({
         setTimeout(()=>{
             set((state)=>({
                 ...state,
-                started: true
+                started: true,
+                ended: false, 
+                attempts: 0, 
+                gameDuration: 0, 
+                date: Date.now(),
+                cards: randomCards(),
             }))
         }, 1000)
     },
@@ -94,10 +99,13 @@ export const useGameStore = create<GameStoreProps>((set, get)=>({
         }))
     },
 
-    addTime: ()=>{set((state)=>({
-        ...state,
-        gameDuration: state.gameDuration + 1
-    }))},
+    addTime: ()=>{
+        if(!get().ended)
+            set((state)=>({
+                ...state,
+                gameDuration: state.gameDuration + 1
+            }
+    ))},
 
     setCard: (id: number)=>{
         let match = matchCards(get().cards, id)
@@ -109,9 +117,11 @@ export const useGameStore = create<GameStoreProps>((set, get)=>({
         }))
 
         let isEnded = match.cards.filter((card)=>!card.paired)
-        console.log(isEnded)
-        if(!isEnded)
-            get().endGame()
+        if(isEnded.length < 1)
+            set((state)=>({
+                ...state,
+                ended: true
+            }))
     },
 
     getGame: ()=>{

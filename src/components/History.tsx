@@ -1,8 +1,14 @@
 import { ReactElement } from "react"
 import { useHistoryStore } from "../stores/history-store";
+import { Time } from "./Time";
 
 export const History = (): ReactElement =>{
     const historyStore = useHistoryStore();
+
+    const toDate = (secounds: number) =>{
+        return Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(secounds);
+    }
+
     return (<>
         <span id="history" className={`${historyStore.historyClass == 'show' ? 'fadeIn' : 'fadeOut'}`} onClick={()=>{historyStore.toggleClass()}}>
             <div className={`card ${historyStore.historyClass}`}  onClick={(event)=>event?.stopPropagation()}>
@@ -19,11 +25,11 @@ export const History = (): ReactElement =>{
                     </thead>
                     <tbody>
                         {historyStore.gamesHistory.map((game, index)=>(
-                            <tr>
-                                <td>{index}</td>
+                            <tr key={index}>
+                                <td>{index+1}</td>
                                 <td>{game.attempts}</td>
-                                <td>{game.gameDuration}</td>
-                                <td>{game.date}</td>
+                                <td><Time time={game.gameDuration}/></td>
+                                <td>{toDate(game.date)}</td>
                             </tr>
                         ))}
                     </tbody>

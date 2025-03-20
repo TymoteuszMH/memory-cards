@@ -1,8 +1,7 @@
 
 
-import { ReactElement, useEffect, useState } from "react"
+import { ReactElement, useState } from "react"
 import { ICard, useGameStore } from "../stores/game-store";
-import { useHistoryStore } from "../stores/history-store";
 
 type CardProp = {
     card: ICard,
@@ -11,7 +10,6 @@ type CardProp = {
 
 export const Card = ({card}: CardProp):ReactElement=>{
     const gameStore = useGameStore();
-    const historyStore = useHistoryStore();
 
     const [photo, setPhoto] = useState("./back_red.png");
     const [imgClass, setImgClass] = useState("");
@@ -22,18 +20,19 @@ export const Card = ({card}: CardProp):ReactElement=>{
 
         setImgClass('rotateOut')
         setTimeout(()=>{
-            setPhoto(card.showed ? "./back_red.png":`./${card.name}_rev.png`)
-            setImgClass('rotateIn')
             gameStore.setCard(index)
         }, 500)
     }
 
-    if((card.paired || card.showed) && photo != `./${card.name}_rev.png`){
-        setPhoto(`./${card.name}_rev.png`)
-        setImgClass('rotateIn')
+    if(imgClass == 'rotateOut' && photo == "./back_red.png"){
+        setTimeout(()=>{
+            setPhoto(`./${card.name}_rev.png`)
+            setImgClass('rotateIn')        
+        }, 500)
+
     }
 
-    if(!card.showed && imgClass != 'rotateOut' && photo == `./${card.name}_rev.png`){
+    if(!card.showed && imgClass != 'rotateOut' && photo != `./back_red.png`){
         setTimeout(()=>{
             setImgClass('rotateOut')
             setTimeout(()=>{
